@@ -51,10 +51,26 @@ shufflerRoutes.route('/update/:id').post(function(req, res) {
         if (!shufflerDB)
             res.status(404).send("data is not found");
         else
-            shufflerDB.shufflerDB_songName = req.body.shufflerDB_songName;
-            shufflerDB.shufflerDB_artistName = req.body.shufflerDB_artistName;
-            shufflerDB.shufflerDB_songGenre = req.body.shufflerDB_songGenre;
-            shufflerDB.shufflerDB_songAnalyzed = req.body.shufflerDB_songAnalyzed;
+            shufflerDB.newPlaylist = req.body.newPlaylist;
+            // shufflerDB.songName = req.body.songName;
+            // shufflerDB.artists = req.body.artists;
+            // shufflerDB.bars = req.body.bars;
+            // shufflerDB.beats = req.body.beats;
+            // shufflerDB.sections = req.body.sections;
+            // shufflerDB.segments = req.body.segments;
+            // shufflerDB.songPopularity = req.body.songPopularity;
+            // shufflerDB.duration = req.body.duration;
+            // shufflerDB.key = req.body.key;
+            // shufflerDB.mode = req.body.mode;
+            // shufflerDB.acousticness = req.body.acousticness;
+            // shufflerDB.danceability = req.body.danceability;
+            // shufflerDB.energy = req.body.energy;
+            // shufflerDB.loudness = req.body.loudness;
+            // shufflerDB.valence = req.body.valence;
+            // shufflerDB.tempo = req.body.tempo;
+            // shufflerDB.genres = req.body.genres;
+            // shufflerDB.artistPopularity = req.body.artistPopularity;
+
 
             shufflerDB.save().then(shufflerDB => {
                 res.json('ShufflerDB updated!');
