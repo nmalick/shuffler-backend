@@ -9,7 +9,7 @@ const PORT = 4000;
 let ShufflerDB = require('./ShufflerDB.model')
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: Infinity }));
 
 mongoose.connect('mongodb://127.0.0.1:27017/shuffler', { useNewUrlParser: true });
 const connection = mongoose.connection;
