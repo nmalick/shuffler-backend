@@ -12,8 +12,10 @@ let ShufflerDB = new Schema({
             },
             playlists: {
                 array: PlaylistArray = {
-                    playlistName: String,
-                    playlistId: String
+                    type: playlistObject={
+                        playlistName: String,
+                        playlistId: String
+                    }
                 }
             },
             artists: {

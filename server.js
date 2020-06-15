@@ -39,46 +39,45 @@ shufflerRoutes.route('/add').post(function(req, res) {
         });
 });
 
-shufflerRoutes.route('/:id').get(function(req, res) {
-    let id = req.params.id;
-    ShufflerDB.findById(id, function(err, shufflerDB) {
+shufflerRoutes.route('/findbyDbId/:DbId').get(function(req, res) {
+    let DbId = req.params.DbId;
+    ShufflerDB.findById(DbId, function(err, shufflerDB) {
         res.json(shufflerDB);
+    })
+    .then(shufflerDB => {
+        res.status(200).json({'shufflerDB': 'shufflerDB added successfully'});
+    })
+    .catch(err => {
+        res.status(400).send('adding new shufflerDB failed');
     });
 });
 
-shufflerRoutes.route('/update/:id').post(function(req, res) {
-    ShufflerDB.findById(req.params.id, function(err, shufflerDB) {
-        if (!shufflerDB)
-            res.status(404).send("data is not found");
-        else
-            shufflerDB.newPlaylist = req.body.newPlaylist;
-            // shufflerDB.songName = req.body.songName;
-            // shufflerDB.artists = req.body.artists;
-            // shufflerDB.bars = req.body.bars;
-            // shufflerDB.beats = req.body.beats;
-            // shufflerDB.sections = req.body.sections;
-            // shufflerDB.segments = req.body.segments;
-            // shufflerDB.songPopularity = req.body.songPopularity;
-            // shufflerDB.duration = req.body.duration;
-            // shufflerDB.key = req.body.key;
-            // shufflerDB.mode = req.body.mode;
-            // shufflerDB.acousticness = req.body.acousticness;
-            // shufflerDB.danceability = req.body.danceability;
-            // shufflerDB.energy = req.body.energy;
-            // shufflerDB.loudness = req.body.loudness;
-            // shufflerDB.valence = req.body.valence;
-            // shufflerDB.tempo = req.body.tempo;
-            // shufflerDB.genres = req.body.genres;
-            // shufflerDB.artistPopularity = req.body.artistPopularity;
+shufflerRoutes.route('/findbyTrackId/:trackId').get(function(req, res) {
+    let trackId = req.params.trackId;
+    ShufflerDB.find({'songToAdd.trackID':{$eq: trackId}}, function(err, shufflerDB) {
+        res.json(shufflerDB);
+        })
+        .then(shufflerDB => {
+            res.status(200).json({'shufflerDB': 'shufflerDB added successfully'});
+        })
+        .catch(err => {
+            res.status(400).send('adding new shufflerDB failed');
+        });
+});
 
+shufflerRoutes.route('/updatePlaylistsByTrackId/:trackId').post(function(req, res) {
+        let trackId = req.params.trackId;
 
-            shufflerDB.save().then(shufflerDB => {
-                res.json('ShufflerDB updated!');
-            })
-            .catch(err => {
-                res.status(400).send("Update not possible");
-            });
-    });
+        ShufflerDB.findOneAndUpdate({'songToAdd.trackID':{$eq: trackId}},
+        {$push: {'songToAdd.playlists': req.body}}, 
+        {returnNewDocument :true})
+        .then(shufflerDB => {
+            res.status(200).json({'shufflerDB': 'Succesfully updated Playlist IDs'});
+        })
+        .catch(err => {
+            res.status(400).send('updating Playlist IDs failed');
+        });
+
 });
 
 
