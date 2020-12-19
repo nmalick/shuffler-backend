@@ -39,16 +39,29 @@ shufflerRoutes.route('/add').post(function(req, res) {
         });
 });
 
+shufflerRoutes.route('/findbyPlaylistId/:PlaylistId').get(function(req, res) {
+    let PlaylistId = req.params.PlaylistId;
+    ShufflerDB.find({'songToAdd.playlists.playlistId':{$eq: PlaylistId}}, function(err, shufflerDB) {
+        res.json(shufflerDB);
+    })
+    .then(shufflerDB => {
+        res.status(200).json({'shufflerDB': 'Found songs for playlist ID'});
+    })
+    .catch(err => {
+        res.status(400).send('failed to find songs by Playlist Id');
+    });
+});
+
 shufflerRoutes.route('/findbyDbId/:DbId').get(function(req, res) {
     let DbId = req.params.DbId;
     ShufflerDB.findById(DbId, function(err, shufflerDB) {
         res.json(shufflerDB);
     })
     .then(shufflerDB => {
-        res.status(200).json({'shufflerDB': 'shufflerDB added successfully'});
+        res.status(200).json({'shufflerDB': 'found songs by DB Id'});
     })
     .catch(err => {
-        res.status(400).send('adding new shufflerDB failed');
+        res.status(400).send('Failed to find songs by DB Id');
     });
 });
 
@@ -58,10 +71,10 @@ shufflerRoutes.route('/findbyTrackId/:trackId').get(function(req, res) {
         res.json(shufflerDB);
         })
         .then(shufflerDB => {
-            res.status(200).json({'shufflerDB': 'shufflerDB added successfully'});
+            res.status(200).json({'shufflerDB': 'found songs by track Id'});
         })
         .catch(err => {
-            res.status(400).send('adding new shufflerDB failed');
+            res.status(400).send('failed to find songs by track id');
         });
 });
 
