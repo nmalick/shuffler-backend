@@ -1,0 +1,8 @@
+How to start Shuffler
+
+Shuffler-ui
+1.Start UI: npm start
+
+Shuffler- backend
+1.Start DB:  mongod
+2.Start server:  nodemon server
